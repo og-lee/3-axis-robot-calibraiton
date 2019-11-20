@@ -22,10 +22,10 @@ B = [-(circleCenter(1,1)^2 + circleCenter(1,2)^2);...
      -(circleCenter(3,1)^2 + circleCenter(3,2)^2)];
  
 coeff = inv(A)*B;
-k = [coeff(1) coeff(2)];
+coeff = coeff';
 centerRad = sqrt(coeff(1)^2 + coeff(2)^2 - coeff(3));
 
-viscircles(k,centerRad,'EdgeColor','b');
+viscircle(center,centerRad,'b');
 hold on ; 
  
 viscircles(circleCenter,circleRadius,'EdgeColor','r'); 

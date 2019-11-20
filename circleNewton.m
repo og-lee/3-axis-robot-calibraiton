@@ -11,9 +11,9 @@ y1 = r*sin(th)+rNumber;
 
 
 syms x y a b r
-func = sqrt((x-a).^2 + (y-b).^2)-r;
-jacMat = jacobian(func,[a,b,r]);
-jacMat = matlabFunction(jacMat);
+func = sqrt((x-a).^2 + (y-b).^2)-r;         % circle equation 
+jacMat = jacobian(func,[a,b,r]);            % jacobian matrix 
+jacMat = matlabFunction(jacMat);            % 
 func = matlabFunction(func);
 
 jac = sym('J',[len(2) 3]);
