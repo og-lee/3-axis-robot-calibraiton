@@ -1,0 +1,67 @@
+clear
+clc
+
+pipImgNoPoint = imread('/home/oggyu/Development/MatlabDev/PipeProject/image/pip1.jpg');
+pipImgPoint = imread('/home/oggyu/Development/MatlabDev/PipeProject/image/pip2.jpg');
+
+pipImgNoPoint = rgb2gray(pipImgNoPoint);
+pipImgPoint = rgb2gray(pipImgPoint);
+
+
+% pipImg = edge(pipImg,'canny');
+
+[centers, radii, metric] = imfindcircles(pipImgNoPoint,[1 15]);
+[centers1,radii1, metric1] = imfindcircles(pipImgPoint,[1 15]);
+
+
+
+circleCenter = centers(1:3,:);
+circleRadius = radii(1:3);
+
+circleCenter1 = centers1(2:4,:);
+circleRadius1 = radii1(2:4,:);
+
+
+[A,B,R] = dot3Circle(circleCenter);
+[A1,B1,R1] = dot3Circle(circleCenter1);
+
+figure(1)
+imshow(pipImgNoPoint);
+title("image without laser point");
+viscircles([A B],R,'EdgeColor','b');
+viscircles(circleCenter,circleRadius,'EdgeColor','r'); 
+
+
+figure(2)
+imshow(pipImgPoint);
+viscircles(centers1,radii1,'EdgeColor','r');
+viscircles([A1 B1],R1,'EdgeColor','b'); 
+
+diff = pipImgPoint-pipImgNoPoint;
+diff = diff.*3;
+diff =im2bw(diff,0.5);
+figure(3)
+imshow(diff);
+
+
+lazerEdge = edge(diff,'canny');
+contourDatas = find(lazerEdge);
+contourCoord = zeros(size(contourDatas,1),2);
+
+yCoord = mod(contourDatas,size(pipImgPoint,1));
+xCoord = floor(contourDatas./size(pipImgPoint,1));
+EdgeCoords = [yCoord xCoord]; 
+
+edgeCenter = sum(EdgeCoords)./size(EdgeCoords,1);
+lazerEdge(floor(edgeCenter(1)),floor(edgeCenter(2))) = 1;
+figure(4)
+imshow(lazerEdge);
+
+
+
+
+
+
+
+
+% todo check it with new picture %
